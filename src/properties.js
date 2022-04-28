@@ -1,0 +1,9 @@
+url='http://localhost:8081';
+exports.url=url;
+exports.loginUrl=url+'/user/login';
+exports.getItemsUrl=url+'/todo/getThings'
+exports.addItemUrl=url+'/todo/add';
+exports.deleteItemUrl=url+'/todo/delete'
+exports.updateItemUrl=url+'/todo/update'
+exports.verifyCodeUrl=url+'/user/verifyCode';
+exports.signupUrl=url+'/user/signup';
