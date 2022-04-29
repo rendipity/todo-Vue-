@@ -22,21 +22,9 @@ export default {
     }
   },
   methods:{
-    changeTimeType(typeId){
-      this.timeType=typeId;
-      let date;
-      switch (this.timeType){
-        case 1:
-          date='今天';
-          break;
-        case 2:
-          date='最近七天';
-          break;
-        case 3:
-          date='全部';
-          break;
-      }
-      this.$store.dispatch("dateChange",date);
+    changeTimeType(dateTypeId){
+      this.timeType=dateTypeId;
+      this.$store.dispatch("dateChange",dateTypeId);
     }
   }
 }

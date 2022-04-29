@@ -28,6 +28,8 @@ export default {
         return this.$store.state.choosedDate;
     }
   },
+  watch:{
+  },
   components:{
     Item
   },
@@ -52,7 +54,8 @@ export default {
         this.$store.dispatch("addPlanThing", this.addThing);
         this.addThing = "";
       }
-    }
+    },
+
   }
 }
 </script>

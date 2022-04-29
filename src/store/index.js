@@ -3,6 +3,7 @@ import Vue from 'vue';
 import {nanoid} from 'nanoid';
 import axios from 'axios';
 import path from '../properties'
+import login from "@/components/login";
 Vue.use(Vuex)
 function DeleteThing(things,id){
     let changeThing;
@@ -24,12 +25,32 @@ const state={
     choosedDate:'今天'
 }
 const actions={
-    dateChange(context,date){
-        context.commit("DataChange",date);
-        switch (date){
-            case '今天':
-
+    dateChange(context,dateType){
+        let date;
+        switch (dateType){
+            case 1:
+                date='今天';
+                break;
+            case 2:
+                date='最近七天';
+                break;
+            case 3:
+                date='全部';
         }
+        if (context.state.choosedDate===date)
+            return;
+        axios.get(path.getItemsUrl+'?timeType='+dateType,{
+            headers:{
+                Authorization:localStorage.getItem('Authorization')
+            }
+        }).then((reponse)=>{
+            console.log(reponse)
+            context.commit('GetItems',reponse.data.data);
+        },(err)=>{
+            console.log(err);
+        });
+
+        context.commit("DataChange",date);
     },
     addPlanThing(context,content){
         let id=nanoid();
@@ -47,9 +68,9 @@ const actions={
                 Authorization:localStorage.getItem('Authorization')
             }
         }).then((response)=>{
-            console.log('添加 '+this.content+' 成功');
+            console.log('添加 '+content+' 成功');
         },(error)=>{
-            console.log('添加 '+this.content+' 失败');
+            console.log('添加 '+content+' 失败');
         })
         //前端更新数据
         context.commit("AddPlanThing",newThing);
@@ -138,6 +159,8 @@ const mutations={
         state.login=status;
     },
     GetItems(state,data){
+        state.completedThings=[];
+        state.planThings=[];
         for ( let i=0;i<data.length;i++){
             if (data[i].state==='0')
                 state.completedThings.push(data[i])
